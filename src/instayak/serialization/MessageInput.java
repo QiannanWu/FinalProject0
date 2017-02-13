@@ -33,7 +33,7 @@ public class MessageInput {
 	 */
 	
     public MessageInput(InputStream in) throws NullPointerException, IOException{
-    	sin = new Scanner(in, "ISO8859-1");
+    	sin = new Scanner(in, InstaYakMessage.PROTOCOL);
         sin.useDelimiter(Pattern.compile("\n"));
     }
     
