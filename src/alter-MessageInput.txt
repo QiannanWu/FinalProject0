@@ -1,0 +1,100 @@
+/************************************************
+*
+* Author: Qiannan Wu
+* Assignment: Program 0
+* Class: CSI4321
+*
+************************************************/
+package instayak.serialization;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Deserialization input source
+ * 
+ * @param sin The Scanner for the InputStream
+ * 
+ * @version 1.0 19 January 2017
+ * @author Qiannan Wu
+ */
+public class MessageInput {
+
+	private byte[] buffer;
+	private int length;
+	private int offset;
+	/**
+	 * Deserialization input source
+	 * 
+	 * @param in byte input source
+	 * 
+	 * @throws java.lang.NullPointerException If in is null
+	 * @throws IOException If I/O problem
+	 */
+	
+    public MessageInput(InputStream in) throws NullPointerException, IOException{
+    	int estimate = in.available();
+    	buffer = new byte[estimate];
+    	length = in.read(buffer);
+    	offset = 0;
+    }
+    
+    
+    /**
+     * Get One Message from the input source
+     * 
+     * @return Returns the first line of the message in String format and separated the line by spaces
+     * @throws InstaYakException If the string contains multiple spaces
+     */
+    public String[] getOneMessage() throws IOException, InstaYakException{
+    	if(length == offset){
+    		return null;
+    	}
+    	
+    	int k = offset;
+    	
+    	
+    	
+    	while(k+1 < length){
+    		if(buffer[k] == '\r'){
+    			if(buffer[k+1] == '\n'){
+    			    break;
+    			}
+    			else{
+    				throw new InstaYakException("Format Error: Finding \r but there is no \n following");
+    			}
+    		}
+    		k++;
+    	}
+    	
+    	if(k + 1 >= length || buffer[k] != '\r' || buffer[k+1] != '\n'){
+    		throw new InstaYakException("Format Error: Bad Framing");
+    	}
+    	
+    	
+    	byte[] b = new byte[k + 1 - offset + 1];
+    	
+    	for(int i = offset; i <= k + 1; ++i){
+    		b[i - offset] = buffer[i];
+    	}
+    	
+    	offset = k + 2;
+    	
+    	System.out.println(b);
+    	String out = new String(b, "ISO8859-1");
+    	System.out.println(out);
+    	int spaceCounter = 0;
+    	for(int i = 0; i < out.length(); ++i){
+    	if(out.charAt(i) == ' '){
+    			spaceCounter++;
+    		}
+    	}
+    		
+    	if(spaceCounter > 1){
+    		throw(new InstaYakException("Too may spaces"));
+    	}
+    		
+    		
+    	return out.split("\\s+");
+    }
+}

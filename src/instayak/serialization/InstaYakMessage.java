@@ -61,7 +61,7 @@ public abstract class InstaYakMessage {
     	String original = in.getOneMessage();
     	
     	if(original == null){
-    		throw(new InstaYakException("Enpty MessageInput"));
+    		throw(new InstaYakException("Enpty MessageInput??"));
     	}
     	
     	String[] s = split(original);

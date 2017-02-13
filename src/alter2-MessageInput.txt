@@ -34,7 +34,7 @@ public class MessageInput {
 	
     public MessageInput(InputStream in) throws NullPointerException, IOException{
     	sin = new Scanner(in, "ISO8859-1");
-        sin.useDelimiter(Pattern.compile("\n"));
+        sin.useDelimiter(Pattern.compile("\r\n"));
     }
     
     
@@ -45,19 +45,27 @@ public class MessageInput {
      * @throws InstaYakException If the string contains multiple spaces
      */
     public String getOneMessage() throws IOException, InstaYakException{
-    	//System.out.println(sin.hasNext(Pattern.compile(".*\r.*")));
-    	if(sin.hasNext(Pattern.compile(".*\r.*"))){
-    		String out = sin.next(Pattern.compile(".*\r"));
-    		
-    		if(out.charAt(out.length() - 1) != '\r'){
-    			throw(new InstaYakException("Invalid"));
-    		}
-    		
-    		return out.substring(0, out.length() - 1);
+    	if(sin.hasNext()){
+    		String out = sin.next();
+    		for(int i = 0; i < out.length(); ++i){
+    	        if(out.charAt(i) == '\r' || out.charAt(i) == '\n' || out.charAt(i) == '\t'){
+    	        	throw(new InstaYakException("Invalid"));
+    	        }
+    	    } 
+    		return out;
     	}
     	else{
     		return null;
     	}
     	   
+    }
+    
+    /**
+     * Check if there is another line in Scanner
+     * 
+     * @return Returns true if Scanner has nextLine; otherwise false
+     */
+    public boolean hasNextMessage() throws IOException{
+    	return sin.hasNextLine();
     }
 }
