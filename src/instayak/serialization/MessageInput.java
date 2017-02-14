@@ -15,14 +15,16 @@ import java.util.regex.Pattern;
 /**
  * Deserialization input source
  * 
- * @param sin The Scanner for the InputStream
- * 
  * @version 1.0 19 January 2017
  * @author Qiannan Wu
  */
 public class MessageInput {
-
+    
+	/**
+	 * The Scanner for the InputStream
+	 */
 	private Scanner sin;
+	
 	/**
 	 * Deserialization input source
 	 * 
@@ -44,11 +46,9 @@ public class MessageInput {
      * @return Returns the first line of the message in String format and separated the line by spaces
      * @throws InstaYakException If the string contains multiple spaces
      */
-    public String getOneMessage() throws IOException, InstaYakException{
-    	//System.out.println(sin.hasNext(Pattern.compile(".*\r.*")));
+    public String getOneMessage() throws InstaYakException{
     	if(sin.hasNext(Pattern.compile(".*\r.*"))){
     		String out = sin.next(Pattern.compile(".*\r"));
-    		
     		if(out.charAt(out.length() - 1) != '\r'){
     			throw(new InstaYakException("Invalid"));
     		}
