@@ -28,6 +28,11 @@ public class InstaYakCredentials extends InstaYakMessage{
 	public static final String OPERATION = "CRED";
 	
 	/**
+	 * Length of the hash string
+	 */
+	public final static int HASH_LENGTH = 32;
+	
+	/**
 	 * Constructs credentials message using given hash
 	 * 
 	 * @param hash hash for credentials
@@ -51,7 +56,7 @@ public class InstaYakCredentials extends InstaYakMessage{
 			throw new InstaYakException("The hash is null");
 		}
 		
-		if( hash.length() != 32 ){
+		if( hash.length() != HASH_LENGTH  ){
 			throw new InstaYakException("The hash has invalid length");
 		}
 		

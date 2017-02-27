@@ -71,38 +71,41 @@ public class InstaYakClient {
 	 * index of password in args
 	 */
 	private final static int passwordIndex = 3;
-    
+
 	/**
 	 * store a instaYakMessage
 	 */
 	private static InstaYakMessage msg;
-    
+
 	/**
-	 * Return a InstaYakMessage. If it is InstaYakError, output error information and then terminate;
-	 *     if it is not the expected message type, output the information;
-	 *     if not valid, output invalid information and then terminate.
+	 * Return a InstaYakMessage. If it is InstaYakError, output error
+	 * information and then terminate; if it is not the expected message type,
+	 * output the information; if not valid, output invalid information and then
+	 * terminate.
 	 * 
-	 * @param in the MessageInput to get a message
-	 * @param expected the expected Message type
+	 * @param in
+	 *            the MessageInput to get a message
+	 * @param expected
+	 *            the expected Message type
 	 * @return a valid InstaYakMessage
 	 */
-	public static InstaYakMessage getAMessage(MessageInput in, String expected){
+	public static InstaYakMessage getAMessage(MessageInput in, String expected) {
 		try {
 			msg = InstaYakMessage.decode(in);
-			if(msg.getOperation().equals(InstaYakError.OPERATION)){
-				System.err.println("Error: <" + ((InstaYakError)msg).getMessage() + ">");
-			    System.exit(1);
+			if (msg.getOperation().equals(InstaYakError.OPERATION)) {
+				System.err.println("Error: <" + ((InstaYakError) msg).getMessage() + ">");
+				System.exit(1);
 			}
-			
-			if(!expected.equals(msg.getOperation())){
+
+			if (!expected.equals(msg.getOperation())) {
 				System.err.println("Unexpected message: <" + msg.toString() + ">");
-			}else{
-				switch(expected){
+			} else {
+				switch (expected) {
 				case InstaYakVersion.OPERATION:
-					System.out.println(msg.getOperation() + " " + ((InstaYakVersion)msg).getVersion());
+					System.out.println(msg.getOperation() + " " + ((InstaYakVersion) msg).getVersion());
 					break;
 				case InstaYakChallenge.OPERATION:
-					System.out.println(msg.getOperation() + " " + ((InstaYakChallenge)msg).getNonce());
+					System.out.println(msg.getOperation() + " " + ((InstaYakChallenge) msg).getNonce());
 					break;
 				case InstaYakACK.OPERATION:
 					System.out.println(msg.getOperation());
@@ -119,7 +122,7 @@ public class InstaYakClient {
 		}
 		return msg;
 	}
-	
+
 	/**
 	 * The main method for InstaYakClient
 	 * 
@@ -143,7 +146,7 @@ public class InstaYakClient {
 			socket = new Socket(server, servPort);
 
 			InputStream in = null;
-			in = socket.getInputStream();	
+			in = socket.getInputStream();
 
 			OutputStream out = null;
 			out = socket.getOutputStream();
@@ -158,28 +161,27 @@ public class InstaYakClient {
 
 			MessageOutput output = new MessageOutput(out);
 
-			// Receive an InstaYak message 
-			do{
+			// Receive an InstaYak message
+			do {
 				getAMessage(input, InstaYakVersion.OPERATION);
-			}while(!InstaYakVersion.OPERATION.equals(msg.getOperation()));
+			} while (!InstaYakVersion.OPERATION.equals(msg.getOperation()));
 
 			// Send ID to server
 			try {
 				InstaYakID id = new InstaYakID(ID);
 				id.encode(output);
-			}catch (InstaYakException e) {
+			} catch (InstaYakException e) {
 				System.err.println("Validation failed: <" + e.getMessage() + ">");
 				System.exit(1);
 			}
-            
+
 			// Receive a CLNG
-			do{
+			do {
 				getAMessage(input, InstaYakChallenge.OPERATION);
-			}while(!InstaYakChallenge.OPERATION.equals(msg.getOperation()));
-			
-			InstaYakChallenge challenge = (InstaYakChallenge)msg;
-			
-			
+			} while (!InstaYakChallenge.OPERATION.equals(msg.getOperation()));
+
+			InstaYakChallenge challenge = (InstaYakChallenge) msg;
+
 			// Send the CRED to server
 			String hashString = ComputeHash.computeHash(challenge.getNonce() + password);
 			try {
@@ -226,10 +228,10 @@ public class InstaYakClient {
 				}
 
 				// Receive a ACK
-				do{
+				do {
 					getAMessage(input, InstaYakACK.OPERATION);
-				}while(!InstaYakACK.OPERATION.equals(msg.getOperation()));
-				
+				} while (!InstaYakACK.OPERATION.equals(msg.getOperation()));
+
 				choice = scanner.next();
 			} while ("y".equals(choice) || "Y".equals(choice));
 
