@@ -102,7 +102,7 @@ public class InstaYakVersion extends InstaYakMessage{
 	 */
 	@Override
 	public void encode(MessageOutput out) throws java.io.IOException{
-		String s = OPERATION + " " + version + "\r\n";
+		String s = OPERATION + " " + version + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

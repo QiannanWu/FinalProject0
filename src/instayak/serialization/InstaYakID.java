@@ -141,7 +141,7 @@ public class InstaYakID extends InstaYakMessage{
       * @throws java.io.IOException if I/O problem
       */
      public void encode(MessageOutput out) throws IOException{
-    	 String s = OPERATION + " " + id + "\r\n";
+    	 String s = OPERATION + " " + id + InstaYakMessage.ENDING;
          byte[] encoding = s.getBytes(PROTOCOL);
          out.write(encoding);
      }

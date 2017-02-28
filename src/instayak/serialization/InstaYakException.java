@@ -1,6 +1,5 @@
 /************************************************
 *
-* Author: Qiannan Wu
 * Assignment: Program 0
 * Class: CSI4321
 *

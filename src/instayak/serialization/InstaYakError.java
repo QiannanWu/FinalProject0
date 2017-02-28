@@ -134,7 +134,7 @@ public class InstaYakError extends InstaYakMessage{
 	 */
 	@Override
 	public void encode(MessageOutput out) throws java.io.IOException{
-		String s = OPERATION + " " + error + "\r\n";
+		String s = OPERATION + " " + error + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

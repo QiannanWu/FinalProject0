@@ -44,20 +44,25 @@ public class MessageInput {
      * Get One Message from the input source
      * 
      * @return Returns the first line of the message in String format and separated the line by spaces
-     * @throws InstaYakException If the string contains multiple spaces
      */
-    public String getOneMessage() throws InstaYakException{
+    public String getOneMessage(){
     	if(sin.hasNext(Pattern.compile(".*\r.*"))){
     		String out = sin.next(Pattern.compile(".*\r"));
-    		if(out.charAt(out.length() - 1) != '\r'){
-    			throw(new InstaYakException("Invalid"));
-    		}
     		
-    		return out.substring(0, out.length() - 1);
+    		return out;
     	}
     	else{
     		return null;
     	}
     	   
+    }
+    
+    /**
+     * If has input, return true. Otherwise false; 
+     * 
+     * @return returns true if it has the next input
+     */
+    public boolean hasNext(){
+    	return sin.hasNext();
     }
 }

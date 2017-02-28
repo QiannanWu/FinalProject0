@@ -166,7 +166,7 @@ public class InstaYakUOn extends InstaYakMessage{
 	 */
 	@Override
 	public void encode(MessageOutput out) throws IOException {
-		String s = OPERATION + " " + category + " " + Base64.getEncoder().withoutPadding().encodeToString(image) + "\r\n";
+		String s = OPERATION + " " + category + " " + Base64.getEncoder().withoutPadding().encodeToString(image) + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

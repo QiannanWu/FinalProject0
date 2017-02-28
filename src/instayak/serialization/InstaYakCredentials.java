@@ -137,7 +137,7 @@ public class InstaYakCredentials extends InstaYakMessage{
 	 */
 	@Override
 	public void encode(MessageOutput out) throws IOException {
-		String s = OPERATION + " " + hash + "\r\n";
+		String s = OPERATION + " " + hash + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

@@ -86,7 +86,7 @@ public class InstaYakACK extends InstaYakMessage {
 	 */
 	@Override
 	public void encode(MessageOutput out) throws java.io.IOException {
-		String s = ACK + "\r\n";
+		String s = ACK + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

@@ -114,7 +114,7 @@ public class InstaYakClient {
 				}
 			}
 		} catch (InstaYakException e) {
-			System.out.println("Invalid message: <" + e.getMessage() + ">");
+			System.err.println("Invalid message: <" + e.getMessage() + ">");
 			System.exit(1);
 		} catch (IOException e) {
 			System.err.println("Unable to communicate: <" + e.getMessage() + ">");
@@ -122,7 +122,7 @@ public class InstaYakClient {
 		}
 		return msg;
 	}
-
+ 
 	/**
 	 * The main method for InstaYakClient
 	 * 

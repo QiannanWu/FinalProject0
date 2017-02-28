@@ -145,7 +145,7 @@ public class InstaYakChallenge extends InstaYakMessage{
 	 */
 	@Override
 	public void encode(MessageOutput out) throws java.io.IOException{
-		String s = OPERATION + " " + nonce + "\r\n";
+		String s = OPERATION + " " + nonce + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

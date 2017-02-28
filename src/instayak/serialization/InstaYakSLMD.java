@@ -81,7 +81,7 @@ public class InstaYakSLMD extends InstaYakMessage{
 	 */
 	@Override
 	public void encode(MessageOutput out) throws java.io.IOException{
-		String s = SLMD + "\r\n";
+		String s = SLMD + InstaYakMessage.ENDING;
 		byte[] encoding = s.getBytes(PROTOCOL);
 		out.write(encoding);
 	}

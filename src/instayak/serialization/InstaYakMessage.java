@@ -25,6 +25,21 @@ public abstract class InstaYakMessage {
 	public static final String PROTOCOL = "ISO8859-1";
 	
 	/**
+	 * const space character 
+	 */
+	public static final char SPACE = ' ';
+	
+	/**
+	 * const ending characters 
+	 */
+	public static final String ENDING = "\r\n";
+	
+	/**
+	 * one const ending character
+	 */
+	public static final char VALID_CHAR = '\r';
+	
+	/**
 	 * Parse a string to two parts, seperated by a space
 	 * 
 	 * @param original the string needs to be parsed.
@@ -35,7 +50,7 @@ public abstract class InstaYakMessage {
 		String[] s = new String[2];
 		int length = 0;
 		String first = "";
-		while(length < original.length() && original.charAt(length) != ' '){
+		while(length < original.length() && original.charAt(length) != SPACE){
 			first += original.charAt(length);
 			length ++;
 		}
@@ -60,10 +75,14 @@ public abstract class InstaYakMessage {
     public static InstaYakMessage decode(MessageInput in) throws InstaYakException, IOException{
     	String original = in.getOneMessage();
     	
-    	if(original == null){
+       	if(original == null){
     		throw(new InstaYakException("Enpty MessageInput??"));
     	}
     	
+    	if(original.charAt(original.length() - 1) != VALID_CHAR){
+			throw(new InstaYakException("Invalid Ending"));
+		}
+        original = original.substring(0, original.length() - 1);    	
     	String[] s = split(original);
     	String sub;
     	if(s[1].length() >= 1){
@@ -79,18 +98,18 @@ public abstract class InstaYakMessage {
         
         switch(s[0]){
         	case InstaYakVersion.OPERATION:
-        		if(!InstaYakVersion.VERSION.equals(sub) || s[1].length()< 1 || s[1].charAt(0) != ' '){
+        		if(!InstaYakVersion.VERSION.equals(sub) || s[1].length()< 1 || s[1].charAt(0) != SPACE){
         			throw(new InstaYakException("Version validation fail"));
         		}
         		return new InstaYakVersion();
         	case InstaYakID.OPERATION:
-        		if(s[1].length()< 1 || s[1].charAt(0) != ' ' || !InstaYakID.isValidID(sub)){
+        		if(s[1].length()< 1 || s[1].charAt(0) != SPACE || !InstaYakID.isValidID(sub)){
     			    throw(new InstaYakException("ID validation fail"));
     		    }
         		
     		    return new InstaYakID(sub);
         	case InstaYakChallenge.OPERATION:
-        		if(s[1].length()< 1 || s[1].charAt(0) != ' ' || !InstaYakChallenge.isValidNonce(sub)){
+        		if(s[1].length()< 1 || s[1].charAt(0) != SPACE || !InstaYakChallenge.isValidNonce(sub)){
         			throw(new InstaYakException("CLNG validation fail"));
         		}
         		
@@ -108,19 +127,19 @@ public abstract class InstaYakMessage {
                 
         		return new InstaYakACK();
         	case InstaYakError.OPERATION:
-        		if(s[1].length()< 1 || s[1].charAt(0) != ' ' || !InstaYakError.isValidErrorMessage(sub)){
+        		if(s[1].length()< 1 || s[1].charAt(0) != SPACE || !InstaYakError.isValidErrorMessage(sub)){
         			throw(new InstaYakException("Error validation fail"));
         		}
         		
         		return new InstaYakError(sub);
         	case InstaYakCredentials.OPERATION:
-        		if(s[1].length()< 1 || s[1].charAt(0) != ' ' || !InstaYakCredentials.isValidHash(sub)){
+        		if(s[1].length()< 1 || s[1].charAt(0) != SPACE || !InstaYakCredentials.isValidHash(sub)){
         			throw new InstaYakException("Hash string validation fail");
         		}
         		
         		return new InstaYakCredentials(sub);
         	case InstaYakUOn.OPERATION:
-        		if(s[1].length()< 1 || s[1].charAt(0) != ' '){
+        		if(s[1].length()< 1 || s[1].charAt(0) != SPACE){
         			throw(new InstaYakException("UOn validation fail"));
         		}
         		
@@ -129,7 +148,7 @@ public abstract class InstaYakMessage {
         			throw new InstaYakException("category string validation fail");
         		}
         		
-        		if(uon[1].length()<= 1 || uon[1].charAt(0) != ' '){
+        		if(uon[1].length()<= 1 || uon[1].charAt(0) != SPACE){
         			throw(new InstaYakException("Image validation fail"));
         		}
         		
