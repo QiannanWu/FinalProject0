@@ -7,6 +7,8 @@
 ************************************************/
 package hoon.serialization;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -126,7 +128,7 @@ public class HoOnResponse extends HoOnMessage{
 	}
 	
 	/**
-     * Get the response ID
+     * Get the query ID
      * 
      * @return current query ID
      */
@@ -144,6 +146,15 @@ public class HoOnResponse extends HoOnMessage{
     	this.queryId = queryId;
     }
     
+    /**
+     * Get the message error code
+     * 
+     * @return message error code
+     */
+    public ErrorCode getErrorCode(){
+    	return errorCode;
+    }
+    
 	/**
      * Serialize the HoOn Response
      * 
@@ -152,6 +163,69 @@ public class HoOnResponse extends HoOnMessage{
      */
 	@Override
 	public byte[] encode() throws HoOnException {
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		b.write(HoOnMessage.RESPONSE_HEADER);
 		
+		int errorCodeValue = errorCode.getErrorCodeValue();
+		byte errorCodeValueByte = (byte) errorCodeValue;
+		b.write(errorCodeValueByte);
+		
+		int tmp = (int) (queryId & 0xffffffffL);
+		byte[] queryIdByte = ByteBuffer.allocate(4).putInt(tmp).array();
+		b.write(queryIdByte, 0, 4);
+		
+		short numberOfPost = (short) (posts.size() & 0xffff);
+		byte[] numberOfPostByte = ByteBuffer.allocate(2).putShort(numberOfPost).array();
+		b.write(numberOfPostByte, 0, 2);
+		
+		for(String s : posts){
+			short lengthOfPost = (short) (s.length() & 0xffff);
+			byte[] lengthOfPostByte = ByteBuffer.allocate(2).putShort(lengthOfPost).array();
+			b.write(lengthOfPostByte, 0, 2);
+		    b.write(s.getBytes(), 0, s.length());
+		}
+		
+		return b.toByteArray();
+	}
+    
+	/**
+	 * Returns the hashCode
+	 * 
+	 * @return Returns the hashCode
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((errorCode == null) ? 0 : errorCode.hashCode());
+		result = prime * result + ((posts == null) ? 0 : posts.hashCode());
+		result = prime * result + (int) (queryId ^ (queryId >>> 32));
+		return result;
+	}
+    
+	/**
+	 * Compare if two HoOnResponse are the same
+	 * 
+	 * @return return true if they has the same contents; otherwise false
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HoOnResponse other = (HoOnResponse) obj;
+		if (errorCode != other.errorCode)
+			return false;
+		if (posts == null) {
+			if (other.posts != null)
+				return false;
+		} else if (!posts.equals(other.posts))
+			return false;
+		if (queryId != other.queryId)
+			return false;
+		return true;
 	}
 }

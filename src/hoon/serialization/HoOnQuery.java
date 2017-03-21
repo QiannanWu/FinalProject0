@@ -7,6 +7,9 @@
 ************************************************/
 package hoon.serialization;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+
 /**
  * Represents a HoOn query and performs wire serialization/deserialization
  * 
@@ -91,7 +94,7 @@ public class HoOnQuery extends HoOnMessage{
     }
 	
     /**
-     * Get the response ID
+     * Get the query ID
      * 
      * @return current query ID
      */
@@ -107,9 +110,33 @@ public class HoOnQuery extends HoOnMessage{
      */
 	@Override
 	public byte[] encode() throws HoOnException {
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		b.write(HoOnMessage.QUERY_HEADER);
 		
+		int errorCodeValue = ErrorCode.NOERROR.getErrorCodeValue();
+		byte errorCodeValueByte = (byte) errorCodeValue;
+		b.write(errorCodeValueByte);
+		
+		int tmp = (int) (queryId & 0xffffffffL);
+		byte[] queryIdByte = ByteBuffer.allocate(4).putInt(tmp).array();
+		b.write(queryIdByte, 0, 4);
+		
+		short requestedPostsValue = (short) (requestedPosts & 0xffff);
+		byte[] numberOfPostByte = ByteBuffer.allocate(2).putShort(requestedPostsValue).array();
+		b.write(numberOfPostByte, 0, 2);
+		
+		return b.toByteArray();
 	}
     
+	/**
+     * Get the message error code
+     * 
+     * @return message error code
+     */
+    public ErrorCode getErrorCode(){
+    	return ErrorCode.NOERROR;
+    }
+	
 	/**
      * Returns type of the packet
      * 
@@ -118,5 +145,40 @@ public class HoOnQuery extends HoOnMessage{
 	@Override
 	public String getType() {
 		return TYPE;
+	}
+    
+	/**
+	 * Returns the hashCode
+	 * 
+	 * @return Returns the hashCode
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (queryId ^ (queryId >>> 32));
+		result = prime * result + requestedPosts;
+		return result;
+	}
+    
+	/**
+	 * Compare if two HoOnQuery are the same
+	 * 
+	 * @return return true if they has the same contents; otherwise false
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HoOnQuery other = (HoOnQuery) obj;
+		if (queryId != other.queryId)
+			return false;
+		if (requestedPosts != other.requestedPosts)
+			return false;
+		return true;
 	}
 }

@@ -7,6 +7,8 @@
 ************************************************/
 package hoon.serialization;
 
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +34,8 @@ public abstract class HoOnMessage {
 	public static final long MIN_ID = 0; // the minimum value of a ID
 	public static final int MAX_POST_LENGTH = 65535; // the max value of a post length
 	public static final int MIN_POST_LENGTH = 0; // the minimum value of a post length
-	public static final int ID_LENGTH = 4; // the length of a query ID
-	public static final int NUMBER_POST_LENGTH = 2; // the length of number of posts
-    /**
+	
+	/**
      * Check if the first byte contains the correct version
      * 
      * @param b the first byte of header
@@ -114,14 +115,11 @@ public abstract class HoOnMessage {
     	if(buffer == null || buffer.length < MIN_SIZE){
     		throw new HoOnException(ErrorCode.PACKETTOOSHORT);
     	}
-    	
-    	byte firstByte = buffer[0];
-     	int errorCodeValue = buffer[1];
-     	long queryId = 0;
-     	for (int i = ID_START; i < ID_END; i++)
-     	{
-     	   queryId = (queryId << 8) + (buffer[i] & 0xff);
-     	}
+     	
+     	ByteBuffer bb = MappedByteBuffer.wrap(buffer);
+     	byte firstByte = bb.get();
+     	int errorCodeValue = bb.get();
+     	long queryId = (long) bb.getInt() & 0xffffffffL;
      	
      	checkHeader(firstByte, errorCodeValue);
      	ErrorCode errorCode = ErrorCode.getErrorCode(errorCodeValue);
@@ -135,12 +133,7 @@ public abstract class HoOnMessage {
     			throw new HoOnException(ErrorCode.UNEXPECTEDERRORCODE);
     		}
     		
-    		int requestedPosts = 0;
-    		
-    		for (int i = NUMBER_POST_START; i < NUMBER_POST_END; i++)
-         	{
-    			requestedPosts = (requestedPosts << 8) + (buffer[i] & 0xff);
-         	}
+    		int requestedPosts = (bb.getShort() & 0xffff);
     		
     		return new HoOnQuery(queryId, requestedPosts);
     	}
@@ -148,19 +141,17 @@ public abstract class HoOnMessage {
     		if(buffer.length > MAX_SIZE_RESPONSE){
     			throw new HoOnException(ErrorCode.PACKETTOOLONG);
     		}
-            int numberOfPosts = 0;
+            int numberOfPosts = (bb.getShort() & 0xffff);
     		List<String> posts = new ArrayList<String>();
-    		
-    		for (int i = NUMBER_POST_START; i < NUMBER_POST_END; i++)
-         	{
-    			numberOfPosts = (numberOfPosts << 8) + (buffer[i] & 0xff);
-         	}
-    		
-    		int cur = NUMBER_POST_END;
-    		for(int i = 0; i < numberOfPosts; ++i){
-    			int postLength = 0;
-    		}
-    		return new HoOnResponse();
+    	    for(int i = 0; i < numberOfPosts; ++i){
+    	    	int postLength = (bb.getShort() & 0xffff);
+    	    	String post = "";
+    	    	for(int j = 0; j < postLength; ++j){
+    	    		post += bb.getChar();
+    	    	}
+    	    	posts.add(post);
+    	    }
+    	    return new HoOnResponse(errorCode, queryId, posts);
     	}
     	
     	throw new HoOnException(ErrorCode.UNEXPECTEDPACKETTYPE);
@@ -194,9 +185,7 @@ public abstract class HoOnMessage {
      * 
      * @return message error code
      */
-    public ErrorCode getErrorCode(){
-    	return errorCode;
-    }
+    public abstract ErrorCode getErrorCode();
     
 	/**
 	 * Check if the requestedPosts is outside of the range
