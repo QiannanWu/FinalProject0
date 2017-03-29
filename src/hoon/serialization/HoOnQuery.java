@@ -8,7 +8,8 @@
 package hoon.serialization;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 /**
  * Represents a HoOn query and performs wire serialization/deserialization
@@ -24,9 +25,10 @@ public class HoOnQuery extends HoOnMessage{
 	/**
 	 * Deserialize HoOn query
 	 * @param buffer bytes from which to deserialize
+	 * @throws IOException if I/O exception
 	 * @throws if deserialization fails
 	 */
-	HoOnQuery(byte[] buffer) throws HoOnException{
+	public HoOnQuery(byte[] buffer) throws HoOnException, IOException{
 		HoOnMessage message = HoOnMessage.decode(buffer);
     	if(message.getType() != TYPE){
     		throw new HoOnException(ErrorCode.UNEXPECTEDPACKETTYPE);
@@ -87,9 +89,12 @@ public class HoOnQuery extends HoOnMessage{
      * Set the message query ID
      * 
      * @param queryId the new query ID
-     * @throws IllegalAccessException if the given ID is out of range
+     * @throws IllegalArgumentException if the given ID is out of range
      */
-    public void setQueryId(long queryId) throws IllegalAccessException{
+    public void setQueryId(long queryId) throws IllegalArgumentException{
+    	if(!isLegalId(queryId)){
+    		throw new IllegalArgumentException("Illegal query ID");
+    	}
     	this.queryId = queryId;
     }
 	
@@ -107,23 +112,24 @@ public class HoOnQuery extends HoOnMessage{
      * 
      * @return serialized HoOn Query
      * @throws HoOnException if error during serialization
+	 * @throws IOException if I/O error
      */
 	@Override
-	public byte[] encode() throws HoOnException {
+	public byte[] encode() throws HoOnException, IOException {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		b.write(HoOnMessage.QUERY_HEADER);
+		DataOutputStream out = new DataOutputStream(b);
+		out.writeByte(HoOnMessage.QUERY_HEADER);
 		
 		int errorCodeValue = ErrorCode.NOERROR.getErrorCodeValue();
-		byte errorCodeValueByte = (byte) errorCodeValue;
-		b.write(errorCodeValueByte);
+		out.writeByte(errorCodeValue);
 		
 		int tmp = (int) (queryId & 0xffffffffL);
-		byte[] queryIdByte = ByteBuffer.allocate(4).putInt(tmp).array();
-		b.write(queryIdByte, 0, 4);
+		out.writeInt(tmp);
 		
 		short requestedPostsValue = (short) (requestedPosts & 0xffff);
-		byte[] numberOfPostByte = ByteBuffer.allocate(2).putShort(requestedPostsValue).array();
-		b.write(numberOfPostByte, 0, 2);
+		out.writeShort(requestedPostsValue);
+		
+		out.flush();
 		
 		return b.toByteArray();
 	}

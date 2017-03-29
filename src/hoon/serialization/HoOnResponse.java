@@ -8,7 +8,8 @@
 package hoon.serialization;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,8 +28,9 @@ public class HoOnResponse extends HoOnMessage{
 	 * Deserialize HoOn response
 	 * 
 	 * @param buffer bytes from which to deserialize
+	 * @throws IOException if I/O exception
 	 */
-	HoOnResponse(byte[] buffer) throws HoOnException{
+	public HoOnResponse(byte[] buffer) throws HoOnException, IOException{
     	HoOnMessage message = HoOnMessage.decode(buffer);
     	if(message.getType() != TYPE){
     		throw new HoOnException(ErrorCode.UNEXPECTEDPACKETTYPE);
@@ -48,8 +50,14 @@ public class HoOnResponse extends HoOnMessage{
 	 * @throws IllegalArgumentException if the queryId or post list are out side the allowable range
 	 */
 	public HoOnResponse(ErrorCode errorCode, long queryId, List<String> posts) throws IllegalArgumentException{
-		if(!isLegalId(queryId) || !isLegalPostsNumber(posts.size())){
+		if(posts == null || !isLegalId(queryId) || !isLegalPostsNumber(posts.size())){
 			throw new IllegalArgumentException("Illegal response");
+		}
+		
+		for(String s : posts){
+			if(!isLegalPost(s)){
+				throw new IllegalArgumentException("Post too long");
+			}
 		}
 		
 		this.errorCode = errorCode;
@@ -140,9 +148,12 @@ public class HoOnResponse extends HoOnMessage{
      * Set the message query ID
      * 
      * @param queryId the new query ID
-     * @throws IllegalAccessException if the given ID is out of range
+     * @throws IllegalArgumentException if the given ID is out of range
      */
-    public void setQueryId(long queryId) throws IllegalAccessException{
+    public void setQueryId(long queryId) throws IllegalArgumentException{
+    	if(!isLegalId(queryId)){
+    		throw new IllegalArgumentException("Illegal ID");
+    	}
     	this.queryId = queryId;
     }
     
@@ -160,30 +171,31 @@ public class HoOnResponse extends HoOnMessage{
      * 
      * @return serialized HoOn Response
      * @throws HoOnException if error during serialization
+	 * @throws IOException if I/O exception
      */
 	@Override
-	public byte[] encode() throws HoOnException {
+	public byte[] encode() throws HoOnException, IOException {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		b.write(HoOnMessage.RESPONSE_HEADER);
+		DataOutputStream out = new DataOutputStream(b);
+		out.writeByte(HoOnMessage.RESPONSE_HEADER);
 		
 		int errorCodeValue = errorCode.getErrorCodeValue();
 		byte errorCodeValueByte = (byte) errorCodeValue;
-		b.write(errorCodeValueByte);
+		out.writeByte(errorCodeValueByte);
 		
 		int tmp = (int) (queryId & 0xffffffffL);
-		byte[] queryIdByte = ByteBuffer.allocate(4).putInt(tmp).array();
-		b.write(queryIdByte, 0, 4);
+		out.writeInt(tmp);
 		
 		short numberOfPost = (short) (posts.size() & 0xffff);
-		byte[] numberOfPostByte = ByteBuffer.allocate(2).putShort(numberOfPost).array();
-		b.write(numberOfPostByte, 0, 2);
+		out.writeShort(numberOfPost);
 		
 		for(String s : posts){
 			short lengthOfPost = (short) (s.length() & 0xffff);
-			byte[] lengthOfPostByte = ByteBuffer.allocate(2).putShort(lengthOfPost).array();
-			b.write(lengthOfPostByte, 0, 2);
-		    b.write(s.getBytes(), 0, s.length());
+			out.writeShort(lengthOfPost);
+			out.writeBytes(s);
 		}
+		
+        out.flush();
 		
 		return b.toByteArray();
 	}

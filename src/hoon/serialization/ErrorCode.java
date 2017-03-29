@@ -24,7 +24,7 @@ public enum ErrorCode {
 	 * NETWORKERROR It indicates some network error occurred
 	 */
     NOERROR(0, "No error"), BADVERSION(1, "Bad version"), 
-    UNEXPECTEDERRORCODE(2, "Unexpected error code"), UNEXPECTEDPACKETTYPE(3, "Unexpected error type"), 
+    UNEXPECTEDERRORCODE(2, "Unexpected error code"), UNEXPECTEDPACKETTYPE(3, "Unexpected packet type"), 
     PACKETTOOLONG(4, "Packet too long"), PACKETTOOSHORT(5, "Packet too short"),
     NETWORKERROR(7, "Network error");
 	private int value; // the error code value
@@ -32,10 +32,12 @@ public enum ErrorCode {
 	
 	/**
 	 * Initialize value of ErrorCode
-	 * @param value
+	 * @param value the value of the error
+	 * @oaram message the error message
 	 */
 	ErrorCode(int value, String message){
 		this.value = value;
+		this.message = message;
 	}
 	
 	/**
@@ -65,7 +67,7 @@ public enum ErrorCode {
 	 */
 	public static ErrorCode getErrorCode(int errorCodeValue) throws IllegalArgumentException{
 		for(ErrorCode e : ErrorCode.values()){
-			if(e.value == errorCodeValue){
+			if(e.getErrorCodeValue() == errorCodeValue){
 				return e;
 			}
 		}	

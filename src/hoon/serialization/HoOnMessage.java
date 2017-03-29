@@ -7,8 +7,9 @@
 ************************************************/
 package hoon.serialization;
 
-import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,15 @@ import java.util.List;
  */
 public abstract class HoOnMessage {
 	
-	public static final byte QUERY_HEADER = 0x32; // first byte of query header
-	public static final byte RESPONSE_HEADER = 0x40; // QR of response of response header
-	private static final int MIN_SIZE = 8; // minimum size of a query packet
-	private static final int MAX_SIZE_QUERY = 8; // max size of a query packet
-	private static final int MAX_SIZE_RESPONSE = 65507; // max size of a response packet (UDP payload size)
-	private static final byte MASK_VERSION = 0x32; // the mask for right version
-	private static final int ERROR_CODE_RANGE = 7; // the range of error code
-	private static final byte MASK_RESERVE = 0x7; // the mask for checking reserve bits
+	public static final byte QUERY_HEADER = 32; // first byte of query header
+	public static final byte RESPONSE_HEADER = 40; // QR of response of response header
+	public static final int MIN_SIZE = 8; // minimum size of a query packet
+	public static final int MAX_SIZE_QUERY = 8; // max size of a query packet
+	//public static final int MAX_SIZE_RESPONSE = 65507; // max size of a response packet (UDP payload size)
+	public static final int MAX_SIZE_RESPONSE = 65536; // max size of a response packet (UDP payload size)
+	public static final byte MASK_VERSION = 32; // the mask for right version
+	public static final int ERROR_CODE_RANGE = 7; // the range of error code
+	public static final byte MASK_RESERVE = 7; // the mask for checking reserve bits
 	public static final int MAX_POST_NUMBER = 65535; // the max number of posts
 	public static final int MIN_POST_NUMBER = 0; // the minimum number of posts
 	public static final long MAX_ID = 4294967295L; // the max value of a ID
@@ -70,7 +72,7 @@ public abstract class HoOnMessage {
      * @return It returns true if the reserved bits is correct; otherwise false
      */
     public static boolean checkReserved(byte b){
-    	if((b & MASK_RESERVE) == 0x0){
+    	if((b & MASK_RESERVE) == (byte)0){
     		return true;
     	}
     	
@@ -80,7 +82,8 @@ public abstract class HoOnMessage {
     /**
      * check if the first 2 byte of the header is correct
      * 
-     * @param buffer bytes from which to deserialize
+     * @param firstByte the first byte of the header
+     * @param errorCodeValue the value of error code
      * 
      * @return It returns true if it passes the check
      * @throws HoOnException if there are errors in the header
@@ -110,16 +113,19 @@ public abstract class HoOnMessage {
      * 
      * @return Deserialized HoOn message
      * @throws HoOnException if deserialization or validation fails
+     * @throws IOException if I/O exception
      */
-    public static HoOnMessage decode(byte[] buffer) throws HoOnException{
+    public static HoOnMessage decode(byte[] buffer) throws HoOnException, IOException{
     	if(buffer == null || buffer.length < MIN_SIZE){
     		throw new HoOnException(ErrorCode.PACKETTOOSHORT);
     	}
      	
-     	ByteBuffer bb = MappedByteBuffer.wrap(buffer);
-     	byte firstByte = bb.get();
-     	int errorCodeValue = bb.get();
-     	long queryId = (long) bb.getInt() & 0xffffffffL;
+     	ByteArrayInputStream bs = new ByteArrayInputStream(buffer);
+     	DataInputStream in = new DataInputStream(bs);
+     	
+     	byte firstByte = in.readByte();
+     	int errorCodeValue = (int)in.readByte();
+     	long queryId = (long) in.readInt() & 0xffffffffL;
      	
      	checkHeader(firstByte, errorCodeValue);
      	ErrorCode errorCode = ErrorCode.getErrorCode(errorCodeValue);
@@ -129,27 +135,45 @@ public abstract class HoOnMessage {
     			throw new HoOnException(ErrorCode.PACKETTOOLONG);
     		}
     		
-    		if(!ErrorCode.NOERROR.equals(errorCodeValue)){
+    		if(!ErrorCode.NOERROR.equals(errorCode)){
+    			System.out.println(errorCodeValue);
     			throw new HoOnException(ErrorCode.UNEXPECTEDERRORCODE);
     		}
     		
-    		int requestedPosts = (bb.getShort() & 0xffff);
+    		int requestedPosts = (in.readUnsignedShort());
     		
     		return new HoOnQuery(queryId, requestedPosts);
     	}
     	else if(firstByte == RESPONSE_HEADER){
-    		if(buffer.length > MAX_SIZE_RESPONSE){
+    		/*if(buffer.length > MAX_SIZE_RESPONSE){
     			throw new HoOnException(ErrorCode.PACKETTOOLONG);
-    		}
-            int numberOfPosts = (bb.getShort() & 0xffff);
+    		}*/
+    		
+            int numberOfPosts = in.readUnsignedShort();
+            /*if(numberOfPosts == 0){
+            	throw new HoOnException(ErrorCode.PACKETTOOSHORT);
+            }*/
+            
+            //System.out.println("total posts: " + numberOfPosts);
     		List<String> posts = new ArrayList<String>();
+    		
     	    for(int i = 0; i < numberOfPosts; ++i){
-    	    	int postLength = (bb.getShort() & 0xffff);
-    	    	String post = "";
-    	    	for(int j = 0; j < postLength; ++j){
-    	    		post += bb.getChar();
+    	    	try{
+    	    	    int postLength = in.readUnsignedShort();
+    	    	    byte[] post = new byte[postLength];
+    	    	    for(int j = 0; j < postLength; ++j){
+    	    		    post[j] = in.readByte();
+    	    		    //System.out.println("postlength: " + postLength + "  curLength: " + j);
+    	    	    }
+    	    	    posts.add(new String(post, "UTF-8"));
+    	    	}catch(IOException e){
+    	    		throw new HoOnException(ErrorCode.PACKETTOOSHORT);
     	    	}
-    	    	posts.add(post);
+    	    }
+    	    
+    	    in.close();
+    	    if(in.available() != 0){
+    	    	throw new HoOnException(ErrorCode.PACKETTOOLONG);
     	    }
     	    return new HoOnResponse(errorCode, queryId, posts);
     	}
@@ -177,8 +201,9 @@ public abstract class HoOnMessage {
      * 
      * @return serialized HoOn message
      * @throws HoOnException if error during serialization
+     * @throws IOException if I/O exception
      */
-    public abstract byte[] encode() throws HoOnException;
+    public abstract byte[] encode() throws HoOnException, IOException;
     
     /**
      * Get the message error code
