@@ -1,1 +1,6 @@
+hoon.app
+hoon.serialization
 hoon.serialization.test
+instayak.app
+instayak.serialization
+instayak.serialization.test

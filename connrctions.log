@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2017-04-05T20:19:46</date>
+  <millis>1491441586633</millis>
+  <sequence>0</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58833</message>
+</record>
+<record>
+  <date>2017-04-05T20:19:52</date>
+  <millis>1491441592497</millis>
+  <sequence>1</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58833</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:06</date>
+  <millis>1491441606509</millis>
+  <sequence>2</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:06</date>
+  <millis>1491441606786</millis>
+  <sequence>3</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:06</date>
+  <millis>1491441606990</millis>
+  <sequence>4</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:07</date>
+  <millis>1491441607155</millis>
+  <sequence>5</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:07</date>
+  <millis>1491441607559</millis>
+  <sequence>6</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:07</date>
+  <millis>1491441607725</millis>
+  <sequence>7</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:07</date>
+  <millis>1491441607913</millis>
+  <sequence>8</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:08</date>
+  <millis>1491441608055</millis>
+  <sequence>9</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:08</date>
+  <millis>1491441608224</millis>
+  <sequence>10</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:08</date>
+  <millis>1491441608375</millis>
+  <sequence>11</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:08</date>
+  <millis>1491441608551</millis>
+  <sequence>12</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:08</date>
+  <millis>1491441608762</millis>
+  <sequence>13</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:08</date>
+  <millis>1491441608957</millis>
+  <sequence>14</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:09</date>
+  <millis>1491441609152</millis>
+  <sequence>15</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 58084</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:09</date>
+  <millis>1491441609182</millis>
+  <sequence>16</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>WARNING</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>createResponse</method>
+  <thread>1</thread>
+  <message>429:Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.(https://dev.twitter.com/docs/rate-limiting/1.1)
+message - Rate limit exceeded
+code - 88
+</message>
+  <exception>
+    <message>429:Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.(https://dev.twitter.com/docs/rate-limiting/1.1)
+message - Rate limit exceeded
+code - 88
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=62590fa6 or
+	http://www.google.co.jp/search?q=0957484c
+TwitterException{exceptionCode=[62590fa6-0957484c], statusCode=429, message=Rate limit exceeded, code=88, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=0, limit=15, resetTimeInSeconds=1491442492, secondsUntilReset=882}, version=4.0.4}</message>
+    <frame>
+      <class>twitter4j.HttpClientImpl</class>
+      <method>handleRequest</method>
+      <line>164</line>
+    </frame>
+    <frame>
+      <class>twitter4j.HttpClientBase</class>
+      <method>request</method>
+      <line>57</line>
+    </frame>
+    <frame>
+      <class>twitter4j.HttpClientBase</class>
+      <method>get</method>
+      <line>75</line>
+    </frame>
+    <frame>
+      <class>twitter4j.TwitterImpl</class>
+      <method>get</method>
+      <line>1786</line>
+    </frame>
+    <frame>
+      <class>twitter4j.TwitterImpl</class>
+      <method>getHomeTimeline</method>
+      <line>112</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>getTwitter</method>
+      <line>90</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>createResponse</method>
+      <line>116</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>main</method>
+      <line>148</line>
+    </frame>
+  </exception>
+</record>
+<record>
+  <date>2017-04-05T20:20:39</date>
+  <millis>1491441639659</millis>
+  <sequence>17</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 55403</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:39</date>
+  <millis>1491441639804</millis>
+  <sequence>18</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>WARNING</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>createResponse</method>
+  <thread>1</thread>
+  <message>429:Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.(https://dev.twitter.com/docs/rate-limiting/1.1)
+message - Rate limit exceeded
+code - 88
+</message>
+  <exception>
+    <message>429:Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.(https://dev.twitter.com/docs/rate-limiting/1.1)
+message - Rate limit exceeded
+code - 88
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=62590fa6 or
+	http://www.google.co.jp/search?q=0957484c
+TwitterException{exceptionCode=[62590fa6-0957484c], statusCode=429, message=Rate limit exceeded, code=88, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=0, limit=15, resetTimeInSeconds=1491442492, secondsUntilReset=852}, version=4.0.4}</message>
+    <frame>
+      <class>twitter4j.HttpClientImpl</class>
+      <method>handleRequest</method>
+      <line>164</line>
+    </frame>
+    <frame>
+      <class>twitter4j.HttpClientBase</class>
+      <method>request</method>
+      <line>57</line>
+    </frame>
+    <frame>
+      <class>twitter4j.HttpClientBase</class>
+      <method>get</method>
+      <line>75</line>
+    </frame>
+    <frame>
+      <class>twitter4j.TwitterImpl</class>
+      <method>get</method>
+      <line>1786</line>
+    </frame>
+    <frame>
+      <class>twitter4j.TwitterImpl</class>
+      <method>getHomeTimeline</method>
+      <line>112</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>getTwitter</method>
+      <line>90</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>createResponse</method>
+      <line>116</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>main</method>
+      <line>148</line>
+    </frame>
+  </exception>
+</record>
+<record>
+  <date>2017-04-05T20:20:47</date>
+  <millis>1491441647893</millis>
+  <sequence>19</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>SEVERE</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Sourse Address: /129.62.148.231 / Port: 55404</message>
+</record>
+<record>
+  <date>2017-04-05T20:20:48</date>
+  <millis>1491441648034</millis>
+  <sequence>20</sequence>
+  <logger>hoon.app.HoOnServer</logger>
+  <level>WARNING</level>
+  <class>hoon.app.HoOnServer</class>
+  <method>createResponse</method>
+  <thread>1</thread>
+  <message>429:Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.(https://dev.twitter.com/docs/rate-limiting/1.1)
+message - Rate limit exceeded
+code - 88
+</message>
+  <exception>
+    <message>429:Returned in API v1.1 when a request cannot be served due to the application's rate limit having been exhausted for the resource. See Rate Limiting in API v1.1.(https://dev.twitter.com/docs/rate-limiting/1.1)
+message - Rate limit exceeded
+code - 88
+
+Relevant discussions can be found on the Internet at:
+	http://www.google.co.jp/search?q=62590fa6 or
+	http://www.google.co.jp/search?q=0957484c
+TwitterException{exceptionCode=[62590fa6-0957484c], statusCode=429, message=Rate limit exceeded, code=88, retryAfter=-1, rateLimitStatus=RateLimitStatusJSONImpl{remaining=0, limit=15, resetTimeInSeconds=1491442492, secondsUntilReset=843}, version=4.0.4}</message>
+    <frame>
+      <class>twitter4j.HttpClientImpl</class>
+      <method>handleRequest</method>
+      <line>164</line>
+    </frame>
+    <frame>
+      <class>twitter4j.HttpClientBase</class>
+      <method>request</method>
+      <line>57</line>
+    </frame>
+    <frame>
+      <class>twitter4j.HttpClientBase</class>
+      <method>get</method>
+      <line>75</line>
+    </frame>
+    <frame>
+      <class>twitter4j.TwitterImpl</class>
+      <method>get</method>
+      <line>1786</line>
+    </frame>
+    <frame>
+      <class>twitter4j.TwitterImpl</class>
+      <method>getHomeTimeline</method>
+      <line>112</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>getTwitter</method>
+      <line>90</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>createResponse</method>
+      <line>116</line>
+    </frame>
+    <frame>
+      <class>hoon.app.HoOnServer</class>
+      <method>main</method>
+      <line>148</line>
+    </frame>
+  </exception>
+</record>
