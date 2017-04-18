@@ -92,7 +92,7 @@ public class InstaYakClient {
 	public static InstaYakMessage getAMessage(MessageInput in, String expected) {
 		try {
 			msg = InstaYakMessage.decode(in);
-			if (msg.getOperation().equals(InstaYakError.OPERATION)) {
+			if (InstaYakError.OPERATION.equals(msg.getOperation())) {
 				System.err.println("Error: <" + ((InstaYakError) msg).getMessage() + ">");
 				System.exit(1);
 			}
@@ -168,6 +168,7 @@ public class InstaYakClient {
 
 			// Send ID to server
 			try {
+				System.out.println("send Id");
 				InstaYakID id = new InstaYakID(ID);
 				id.encode(output);
 			} catch (InstaYakException e) {
@@ -191,11 +192,15 @@ public class InstaYakClient {
 				System.err.println("Validation failed: <Cannot create credential>");
 				System.exit(1);
 			}
-
+            
+			//Receive an ACK respond
+			getAMessage(input, InstaYakACK.OPERATION);
+			
 			// Client sends post requests
 			scanner = new Scanner(System.in);
 			String choice;
 			do {
+				System.out.println("[UOn, SLMD]");
 				choice = scanner.next();
 				switch (choice) {
 				case InstaYakUOn.OPERATION:
@@ -204,7 +209,9 @@ public class InstaYakClient {
 					byte[] image = null;
 					while (invalidFile) {
 						try {
+							System.out.println("Category>");
 							String category = scanner.next();
+							System.out.println("Image Filename>");
 							imgFile = new FileInputStream(scanner.next());
 							image = new byte[imgFile.available()];
 							imgFile.read(image);
@@ -231,7 +238,8 @@ public class InstaYakClient {
 				do {
 					getAMessage(input, InstaYakACK.OPERATION);
 				} while (!InstaYakACK.OPERATION.equals(msg.getOperation()));
-
+                
+				System.out.println("Continue (Y/N)>");
 				choice = scanner.next();
 			} while ("y".equals(choice) || "Y".equals(choice));
 
